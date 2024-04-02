@@ -1,0 +1,29 @@
+pipeline{
+    agent {
+        docker{
+            image'openjdk:11'
+        }
+    }
+    stages{
+
+        stage('Code checkout'){
+            steps{
+               // Checkout code from a specific Git repository using its URL
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], 
+                          userRemoteConfigs: [[url: 'https://github.com/vikrampasricha/demo-git-proj']]])
+            }
+        }
+
+        stage('Build'){
+            steps{
+                 sh 'javac helloworld.java'
+            }
+        }
+        stage('run'){
+            steps{
+                sh 'java helloworld'
+            }
+        }
+        
+    }
+}
